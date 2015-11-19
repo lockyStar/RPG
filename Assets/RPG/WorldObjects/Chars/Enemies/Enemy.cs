@@ -11,6 +11,10 @@ public class EnemyController : Character {
     public int state;
     public bool isFacingRight = true;
 
+    public GameObject activePlayer;
+
+  
+
     public bool isTargetDefined = false;
 
     private Vector3 target;
@@ -19,7 +23,15 @@ public class EnemyController : Character {
     void Start () {
         state = waiting;
 	}
-
+    private void OnMouseDown()
+    {
+        activePlayer = GameObject.FindWithTag("ActiveHero");
+        if (activePlayer != null)
+        {
+            Debug.Log(activePlayer.transform.position);
+            activePlayer.SendMessage("SetEnemy", gameObject);
+        }
+    }
     private void Flip()
     {
         //меняем направление движения персонажа
@@ -51,7 +63,7 @@ public class EnemyController : Character {
     // Update is called once per frame
     void FixedUpdate () {
         Debug.Log("FUpdate");
-        if (isTargetDefined == false)
+       /* if (isTargetDefined == false)
         {
             Debug.Log("Setting new target");
             Vector3 point = (UnityEngine.Random.insideUnitSphere); //задаём рандомное направление (круиз / патруль)
@@ -74,6 +86,6 @@ public class EnemyController : Character {
             {
                 isTargetDefined = false; // При достижении цели сбрасываем флаг наличия цели
             }
-        }
+        }*/
 	}
 }

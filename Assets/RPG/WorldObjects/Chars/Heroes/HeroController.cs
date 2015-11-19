@@ -13,6 +13,14 @@ public class HeroController : Character {
 
     private Vector3 target; // Цель для перемещения
 
+    private bool isTargetEnemy = false; // Цель для перемещения враг или нет
+
+    private GameObject enemy; // 
+
+    
+
+    private double attackrange;
+
    
     // Use this for initialization
     void Start() {
@@ -22,12 +30,14 @@ public class HeroController : Character {
     void MakeActive()
       {
           active = true;
-      }
+        gameObject.tag = "ActiveHero";
+    }
 
       void MakeUnactve()
       {
           active = false;
-      }
+        gameObject.tag = "PassiveHero";
+    }
 
      
       public bool IsActive()
@@ -36,6 +46,12 @@ public class HeroController : Character {
       }
 
    
+    public void SetEnemy(GameObject enemyTarget)
+    {
+        isTargetEnemy = true;
+        enemy = enemyTarget;
+        Debug.Log(":(");
+    }
 
     private void OnMouseDown()
     {
@@ -47,6 +63,14 @@ public class HeroController : Character {
         //задать активность\неактивность  (исправить на сброс активности по клику не на перса, при наличии нескольких персонажей)
     }
     
+    private void PositionUpdate()
+    {
+        if (isTargetEnemy)
+        {
+            target = enemy.transform.position;
+            isTargetDefined = true;
+        }
+    }
 
     private void Flip()
     {
@@ -63,6 +87,7 @@ public class HeroController : Character {
     Vector3 SetTarget (Vector3 point)//Задание цели перемещения
     {
         Vector3 target = point;
+
         if ((target.x - transform.position.x > 0 && !isFacingRight) || (target.x - transform.position.x < 0 && isFacingRight))
         {    //отражаем персонажа в соответствие с направлением движения к цели
             
@@ -77,11 +102,14 @@ public class HeroController : Character {
 
     void FixedUpdate()
     {
-        
         if (Input.GetMouseButtonDown(1)&&(active)) // Если произошёл клик правой кнопкой мыши и данный персонаж активен, то задать цель
         {
+            isTargetEnemy = false;
             target = SetTarget(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-           
+        }
+        if ((active))
+        {
+            PositionUpdate();
         }
         if (isTargetDefined) // Если задана цель, то двигаемся к ней
         {
