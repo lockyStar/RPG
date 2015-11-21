@@ -15,11 +15,9 @@ public class HeroController : Character {
 
     private bool isTargetEnemy = false; // Цель для перемещения враг или нет
 
-    private GameObject enemy; // 
+    private GameObject enemy; // Объект враг-цель
 
-    
-
-    private double attackrange;
+    private double attackRange;//Радиус атаки
 
    
     // Use this for initialization
@@ -27,33 +25,33 @@ public class HeroController : Character {
         
     }
 
-    void MakeActive()
-      {
-          active = true;
+    void MakeActive()//Сделать объект выбранным пользователем
+    {
+        active = true;
         gameObject.tag = "ActiveHero";
     }
 
-      void MakeUnactve()
-      {
-          active = false;
+    void MakeUnactve()//Убрать выделение с этого объекта
+    {
+        active = false;
         gameObject.tag = "PassiveHero";
     }
 
      
-      public bool IsActive()
-      {
-          return active;
-      }
+    public bool IsActive()//Выделен ли этот объект
+    {
+        return active;
+    }
 
    
-    public void SetEnemy(GameObject enemyTarget)
+    public void SetEnemy(GameObject enemyTarget)//Задание врага-цели
     {
         isTargetEnemy = true;
         enemy = enemyTarget;
-        Debug.Log(":(");
+        //Debug.Log(":(");
     }
 
-    private void OnMouseDown()
+    private void OnMouseDown()//Выделение персонажа по клику на него
     {
         if (this.IsActive())
         {
@@ -63,7 +61,7 @@ public class HeroController : Character {
         //задать активность\неактивность  (исправить на сброс активности по клику не на перса, при наличии нескольких персонажей)
     }
     
-    private void PositionUpdate()
+    private void TargetPositionUpdate()// Обновление координат вектора-цели с учётом того, что 
     {
         if (isTargetEnemy)
         {
@@ -72,7 +70,7 @@ public class HeroController : Character {
         }
     }
 
-    private void Flip()
+    private void Flip()// Отражение направления отрисовки персонажа
     {
         //меняем направление движения персонажа
         isFacingRight = !isFacingRight;
@@ -84,7 +82,7 @@ public class HeroController : Character {
         transform.localScale = theScale;
     }
 
-    Vector3 SetTarget (Vector3 point)//Задание цели перемещения
+    Vector3 SetTarget (Vector3 point)//Задание вектора-цели перемещения
     {
         Vector3 target = point;
 
@@ -109,7 +107,7 @@ public class HeroController : Character {
         }
         if ((active))
         {
-            PositionUpdate();
+            TargetPositionUpdate();
         }
         if (isTargetDefined) // Если задана цель, то двигаемся к ней
         {

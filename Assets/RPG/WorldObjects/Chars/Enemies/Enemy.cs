@@ -10,6 +10,7 @@ public class EnemyController : Character {
     protected const int waiting = 0;
     protected const int selfHealing = 2;
     public int state;
+    public double viewRange = 3.0f;//Дальность обзора за пределы тумана войны
     //Направление передвижения
     public bool isFacingRight = false;
     // Вспомогаательный объект необходимый для определения объектов таргетировавших нас
@@ -46,6 +47,53 @@ public class EnemyController : Character {
         transform.localScale = theScale;
     }
 
+    
+    double DistanceFromTo(Vector3 a, Vector3 b)//Расстояние между двумя координатами 
+    {
+        return Math.Abs(a.x - b.x);
+    }
+
+    GameObject theClosestOne;//вспомогательная переменная необходимая для возвращения ближайшего объекта по тегу
+
+    void SeekingTheClosestObjectByTag (string tag, double minDistance) //Поиск ближайшего объекта к текущему по тегу
+    {
+        theClosestOne = null;
+        GameObject[] possibleTargets = null;
+        possibleTargets = GameObject.FindGameObjectsWithTag(tag);//Задаём список объектов с таким тегом
+
+        foreach (GameObject possibleTarget in possibleTargets)// Проверяем каждый, может ли он быть ближайшим
+        {
+            double distance = DistanceFromTo(transform.position, possibleTarget.transform.position);
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                theClosestOne = possibleTarget;
+            }
+        }
+    }
+
+    void HeroSeeking() //Поиск врага для нападения
+    {
+        
+        
+        double minDistance = viewRange;
+        bool isHeroFound = false;
+        string[] tagsArray = { "Hero", "ActiveHero", "PassiveHero" }; //Набор тегов для поиска
+        foreach (string tag in tagsArray)
+        {
+            SeekingTheClosestObjectByTag(tag, minDistance);
+            if (theClosestOne != null)
+            {
+                minDistance = DistanceFromTo(theClosestOne.transform.position, transform.position); //Обновление минимального расстояния до цели
+            }
+        }
+        if (theClosestOne != null)//Если найден ближайший объект внутри радиуса обзора, то задаём цель
+        {
+            targetObject = theClosestOne;
+            isTargetHero = true;
+        }
+    }
+
     Vector3 SetTarget(Vector3 point)//Задание цели перемещения
     {
 
@@ -77,32 +125,6 @@ public class EnemyController : Character {
             isTargetDefined = false; // При достижении цели сбрасываем флаг наличия цели
         }
 
-    }
-
-    double DistanceFromTo(Vector3 a, Vector3 b)
-    {
-        return Math.Abs(a.x - b.x);
-    }
-
-
-    void HeroSeeking()
-    {
-        GameObject[] possibleTargets = null;
-        GameObject theClosestOne;
-        double minDistance = 3.0f;
-        bool isHeroFound = false;
-        possibleTargets = GameObject.FindGameObjectsWithTag("Hero");
-       
-        foreach (GameObject possibleTarget in possibleTargets)
-        {
-            double distance = DistanceFromTo(transform.position, possibleTarget.transform.position);
-            if (distance < minDistance)
-            {
-                minDistance = distance;
-                isHeroFound = true;
-                theClosestOne = possibleTarget;
-            }
-        }
     }
 
     void TargetDefining ()
