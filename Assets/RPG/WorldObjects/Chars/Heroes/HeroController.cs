@@ -17,7 +17,11 @@ public class HeroController : Character {
 
     private GameObject enemy; // Объект враг-цель
 
-    private double attackRange;//Радиус атаки
+    public float attackRange;//Радиус атаки
+
+    public Rigidbody2D rocket;
+
+    public float rocketspeed;
 
    
     // Use this for initialization
@@ -48,7 +52,24 @@ public class HeroController : Character {
     {
         isTargetEnemy = true;
         enemy = enemyTarget;
+        isTargetDefined = true;
         //Debug.Log(":(");
+    }
+
+    private void shot()
+    {
+        if (isFacingRight)
+        {
+            //создаем рокету в право и скорость в право
+            Rigidbody2D bullet = Instantiate(rocket, transform.position, Quaternion.Euler(new Vector3(0, 0, 0))) as Rigidbody2D;
+            bullet.velocity = new Vector2(rocketspeed, 0);
+        }
+        else
+        {
+            //в лево аналогично
+            Rigidbody2D bullet = Instantiate(rocket, transform.position, Quaternion.Euler(new Vector3(0, 0, 180f))) as Rigidbody2D;
+            bullet.velocity = new Vector2(-rocketspeed, 0);
+        }
     }
 
     private void OnMouseDown()//Выделение персонажа по клику на него
@@ -60,7 +81,7 @@ public class HeroController : Character {
         else this.MakeActive();
         //задать активность\неактивность  (исправить на сброс активности по клику не на перса, при наличии нескольких персонажей)
     }
-    
+    /*
     private void TargetPositionUpdate()// Обновление координат вектора-цели с учётом того, что 
     {
         if (isTargetEnemy)
@@ -68,7 +89,7 @@ public class HeroController : Character {
             target = enemy.transform.position;
             isTargetDefined = true;
         }
-    }
+    }*/
 
     private void Flip()// Отражение направления отрисовки персонажа
     {
@@ -105,9 +126,10 @@ public class HeroController : Character {
             isTargetEnemy = false;
             target = SetTarget(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         }
-        if ((active))
+        if (isTargetEnemy && (active) && isTargetDefined)
         {
-            TargetPositionUpdate();
+            if (enemy.transform.position != null)
+                target = SetTarget(enemy.transform.position);
         }
         if (isTargetDefined) // Если задана цель, то двигаемся к ней
         {
@@ -118,10 +140,21 @@ public class HeroController : Character {
                 speed += 1; //увеличение скорости до максимальной
             }
             transform.position = Vector3.MoveTowards(transform.position, target, Convert.ToInt16(speed) * Time.deltaTime);
-            if (Math.Abs(target.x - transform.position.x ) <= 1 / 1000)
+            if (isTargetEnemy)
             {
-                isTargetDefined = false; // При достижении цели сбрасываем флаг наличия цели
+                if (Math.Abs(target.x - transform.position.x) <= (attackRange - (0.001)))
+                {
+                    isTargetDefined = false; // При достижении цели сбрасываем флаг наличия цели
+                    shot();
+                }
             } 
+            else
+            {
+                if (Math.Abs(target.x - transform.position.x) <= (1 / 1000))
+                {
+                    isTargetDefined = false; // При достижении цели сбрасываем флаг наличия цели
+                }
+            }
         }
     }
 }

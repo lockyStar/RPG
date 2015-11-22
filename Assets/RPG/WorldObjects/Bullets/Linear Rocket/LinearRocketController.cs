@@ -5,13 +5,13 @@ using System.Collections;
 
 public class LinearRocketController : BulletController{
 
-    // Use this for initialization
+   // private Vector3 direction;
     
-    private Vector3 direction;
-    
-    private int speed = 30;
+    //private int speed = 30;
 
-    LinearRocketController (Vector3 ShootingDirection)
+    
+
+   /* LinearRocketController (Vector3 ShootingDirection)
     {
         ShootingDirection.y = 0;
         ShootingDirection.x = ShootingDirection.x / Math.Abs(ShootingDirection.x);
@@ -24,16 +24,27 @@ public class LinearRocketController : BulletController{
             //задаем новый размер персонажа, равный старому, но зеркально отраженный
             transform.localScale = theScale;
         }
-    }
+    }*/
 
 	void Start () {
-        direction = new Vector3(1, 0, 0);
+        //  direction = new Vector3(1, 0, 0);
+        Destroy(gameObject, 5); //разрушение объекта через 5 секунд, если он не разрушился ранее
 	}
-	
-	// Update is called once per frame
-	void FixedUpdate () {
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Enemy")
+        {
+            Destroy(other.gameObject);
+            Destroy(gameObject);
+        }
+        
+    }
+
+    // Update is called once per frame
+    /*void FixedUpdate () {
         Vector3 target = transform.position;
         target.x += direction.x;
         transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
-    }
+    }*/
 }

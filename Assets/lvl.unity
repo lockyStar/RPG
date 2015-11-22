@@ -99,7 +99,7 @@ GameObject:
   - 114: {fileID: 343445346}
   m_Layer: 0
   m_Name: typicalEnemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -118,9 +118,9 @@ MonoBehaviour:
   destructable: 1
   movingObject: 1
   state: 0
+  viewRange: 3
   isFacingRight: 1
-  activePlayer: {fileID: 0}
-  isTargetDefined: 0
+  activeHero: {fileID: 0}
 --- !u!61 &343445347
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -133,7 +133,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: -.0144681549}
   serializedVersion: 2
-  m_Size: {x: 1.27999997, y: .730207026}
+  m_Size: {x: 1.27999997, y: .699999988}
 --- !u!50 &343445348
 Rigidbody2D:
   serializedVersion: 2
@@ -183,7 +183,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 343445345}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.99000001, y: -2.66000009, z: 0}
+  m_LocalPosition: {x: -9.75, y: -2.71000004, z: 0}
   m_LocalScale: {x: 3.17945385, y: 3.30665159, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -248,7 +248,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 6
+  orthographic size: 15
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -274,56 +274,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!1001 &1440381691
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 498364, guid: a11c569531808f4448b2ef7bcb2ae3dd, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 2.91000009
-      objectReference: {fileID: 0}
-    - target: {fileID: 498364, guid: a11c569531808f4448b2ef7bcb2ae3dd, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: -2.53999996
-      objectReference: {fileID: 0}
-    - target: {fileID: 498364, guid: a11c569531808f4448b2ef7bcb2ae3dd, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 498364, guid: a11c569531808f4448b2ef7bcb2ae3dd, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 498364, guid: a11c569531808f4448b2ef7bcb2ae3dd, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 498364, guid: a11c569531808f4448b2ef7bcb2ae3dd, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 498364, guid: a11c569531808f4448b2ef7bcb2ae3dd, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 498364, guid: a11c569531808f4448b2ef7bcb2ae3dd, type: 2}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 109278, guid: a11c569531808f4448b2ef7bcb2ae3dd, type: 2}
-      propertyPath: m_Name
-      value: Linear Rocket
-      objectReference: {fileID: 0}
-    - target: {fileID: 109278, guid: a11c569531808f4448b2ef7bcb2ae3dd, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: a11c569531808f4448b2ef7bcb2ae3dd, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1 &1853711406
 GameObject:
   m_ObjectHideFlags: 0
@@ -387,7 +337,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1853711406}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 71.3000031, y: -2.88000011, z: 0}
+  m_LocalPosition: {x: 34.5999985, y: -2.9000001, z: 0}
   m_LocalScale: {x: 19.0560074, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -473,7 +423,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1887105516}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.69999981, y: -1.64999998, z: 0}
+  m_LocalPosition: {x: 12.7799997, y: -1.58000004, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -491,3 +441,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destructable: 1
   movingObject: 1
+  attackRange: 10
+  rocket: {fileID: 5055760, guid: 70c5fb1f110d6b6409dae42be0ffc388, type: 2}
+  rocketspeed: 10
