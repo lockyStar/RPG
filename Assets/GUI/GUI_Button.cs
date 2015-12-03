@@ -16,13 +16,13 @@ public class GUI_Button : MonoBehaviour {
 	}
     private void OnGUI()
     {
-        if (GUI.Button(new Rect(15, 15, 100, 50), "Button"))
+        if (GUI.Button(new Rect(0, 0, 100, 50), "Button"))
         {
             //if (Input.GetMouseButtonDown(1))
             
                 Debug.Log("I am alive!");
                 spis = GameObject.FindGameObjectsWithTag("Building");
-                if (spis.Length < 1) Instantiate(prefab, new Vector3(-10 ,-2.2F , 0), Quaternion.identity);
+            if (spis.Length < 1) { Instantiate(prefab, new Vector3(-10, -2F, 0), Quaternion.identity); }
             
         }
 
