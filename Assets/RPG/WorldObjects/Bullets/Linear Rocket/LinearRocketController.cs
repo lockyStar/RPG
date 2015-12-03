@@ -28,23 +28,28 @@ public class LinearRocketController : BulletController{
 
 	void Start () {
         //  direction = new Vector3(1, 0, 0);
-        Destroy(gameObject, 5); //разрушение объекта через 5 секунд, если он не разрушился ранее
+        Destroy(gameObject, .5f); //разрушение объекта через 5 секунд, если он не разрушился ранее
 	}
 
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Enemy")
         {
-            Destroy(other.gameObject);
+            other.gameObject.GetComponent<EnemyController>().Hurt();
             Destroy(gameObject);
         }
         
     }
+    void FixedUpdate()
+    {
 
-    // Update is called once per frame
-    /*void FixedUpdate () {
-        Vector3 target = transform.position;
-        target.x += direction.x;
-        transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
-    }*/
-}
+    }
+
+
+        // Update is called once per frame
+        /*void FixedUpdate () {
+            Vector3 target = transform.position;
+            target.x += direction.x;
+            transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+        }*/
+    }

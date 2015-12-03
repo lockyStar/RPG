@@ -5,6 +5,8 @@ using System.Collections;
 
 public class EnemyController : Character {
     // Состояния КА ИИ
+    public Renderer rend;
+    public int HP = 2;
     protected const int chilling = 1;
     protected const int movingToSomeone = 3;
     protected const int waiting = 0;
@@ -20,6 +22,7 @@ public class EnemyController : Character {
     private Vector3 target;
     private bool isTargetHero = false;
     private GameObject targetObject;
+    public bool dead = false;
 
     // Use this for initialization
     void Start() {
@@ -93,7 +96,11 @@ public class EnemyController : Character {
             isTargetHero = true;
         }
     }
-
+    public void Hurt()
+    {
+        // уменьшение HP на один
+        HP--;
+    }
     Vector3 SetTarget(Vector3 point)//Задание цели перемещения
     {
 
@@ -149,5 +156,13 @@ public class EnemyController : Character {
         {
             PositionUpdate(); //Перемещение к цели
         }
-	}
+        if (HP <= 0 && !dead)
+            Death(); // если НР законились, убиваем
+    }
+    void Death()
+    {
+        dead = true;
+        rend.enabled = false;
+        Destroy(gameObject, .1f);
+    }
 }

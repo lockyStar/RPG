@@ -56,7 +56,7 @@ public class HeroController : Character {
         //Debug.Log(":(");
     }
 
-    private void shot()
+    private IEnumerator shot()
     {
         if (isFacingRight)
         {
@@ -69,6 +69,11 @@ public class HeroController : Character {
             //в лево аналогично
             Rigidbody2D bullet = Instantiate(rocket, transform.position, Quaternion.Euler(new Vector3(0, 0, 180f))) as Rigidbody2D;
             bullet.velocity = new Vector2(-rocketspeed, 0);
+        }
+        if (enemy.gameObject.GetComponent<EnemyController>().dead ==false)
+        {
+            yield return new WaitForSeconds(.5f);
+            StartCoroutine("shot");
         }
     }
 
@@ -144,8 +149,8 @@ public class HeroController : Character {
             {
                 if (Math.Abs(target.x - transform.position.x) <= (attackRange - (0.001)))
                 {
-                    isTargetDefined = false; // При достижении цели сбрасываем флаг наличия цели
-                    shot();
+                    StartCoroutine("shot");
+                    isTargetDefined = false;  // При достижении цели сбрасываем флаг наличия цели
                 }
             } 
             else

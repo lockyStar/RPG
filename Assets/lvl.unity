@@ -117,10 +117,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destructable: 1
   movingObject: 1
+  rend: {fileID: 343445349}
+  HP: 2
   state: 0
   viewRange: 3
   isFacingRight: 1
   activeHero: {fileID: 0}
+  dead: 0
 --- !u!61 &343445347
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -443,4 +446,4 @@ MonoBehaviour:
   movingObject: 1
   attackRange: 10
   rocket: {fileID: 5055760, guid: 70c5fb1f110d6b6409dae42be0ffc388, type: 2}
-  rocketspeed: 10
+  rocketspeed: 30
