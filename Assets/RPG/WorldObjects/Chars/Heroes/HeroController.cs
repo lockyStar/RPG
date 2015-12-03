@@ -58,22 +58,22 @@ public class HeroController : Character {
 
     private IEnumerator shot()
     {
-        if (isFacingRight)
+        if (enemy.gameObject.GetComponent<EnemyController>().dead == false)
         {
-            //создаем рокету в право и скорость в право
-            Rigidbody2D bullet = Instantiate(rocket, transform.position, Quaternion.Euler(new Vector3(0, 0, 0))) as Rigidbody2D;
-            bullet.velocity = new Vector2(rocketspeed, 0);
-        }
-        else
-        {
-            //в лево аналогично
-            Rigidbody2D bullet = Instantiate(rocket, transform.position, Quaternion.Euler(new Vector3(0, 0, 180f))) as Rigidbody2D;
-            bullet.velocity = new Vector2(-rocketspeed, 0);
-        }
-        if (enemy.gameObject.GetComponent<EnemyController>().dead ==false)
-        {
-            yield return new WaitForSeconds(.5f);
-            StartCoroutine("shot");
+            if (isFacingRight)
+            {
+                //создаем рокету в право и скорость в право
+                Rigidbody2D bullet = Instantiate(rocket, transform.position, Quaternion.Euler(new Vector3(0, 0, 0))) as Rigidbody2D;
+                bullet.velocity = new Vector2(rocketspeed, 0);
+            }
+            else
+            {
+                //в лево аналогично
+                Rigidbody2D bullet = Instantiate(rocket, transform.position, Quaternion.Euler(new Vector3(0, 0, 180f))) as Rigidbody2D;
+                bullet.velocity = new Vector2(-rocketspeed, 0);
+            }
+             yield return new WaitForSeconds(1f);
+             StartCoroutine("shot");
         }
     }
 

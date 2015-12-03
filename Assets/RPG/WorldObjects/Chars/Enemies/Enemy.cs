@@ -163,6 +163,6 @@ public class EnemyController : Character {
     {
         dead = true;
         rend.enabled = false;
-        Destroy(gameObject, .1f);
+        Destroy(gameObject, .5f);
     }
 }

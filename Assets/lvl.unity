@@ -357,6 +357,7 @@ GameObject:
   - 50: {fileID: 1887105518}
   - 61: {fileID: 1887105517}
   - 114: {fileID: 1887105521}
+  - 114: {fileID: 1887105522}
   m_Layer: 0
   m_Name: FlyHero
   m_TagString: ActiveHero
@@ -446,4 +447,17 @@ MonoBehaviour:
   movingObject: 1
   attackRange: 10
   rocket: {fileID: 5055760, guid: 70c5fb1f110d6b6409dae42be0ffc388, type: 2}
-  rocketspeed: 30
+  rocketspeed: 50
+--- !u!114 &1887105522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1887105516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ace0e4c582596734da958378bf518720, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 474516, guid: 362152a0fa5212846aa67d842a80afb5, type: 2}
+  spis: []
