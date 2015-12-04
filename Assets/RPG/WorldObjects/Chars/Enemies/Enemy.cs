@@ -11,8 +11,11 @@ public class EnemyController : Character {
     protected const int movingToSomeone = 3;
     protected const int waiting = 0;
     protected const int selfHealing = 2;
+    protected const int RageSpeed = 17;
+    protected const int NormalSpeed = 11;
+
     public int state;
-    public double viewRange = 3.0f;//Дальность обзора за пределы тумана войны
+    private double viewRange = 17;//Дальность обзора за пределы тумана войны
     //Направление передвижения
     public bool isFacingRight = false;
     // Вспомогаательный объект необходимый для определения объектов таргетировавших нас
@@ -27,6 +30,9 @@ public class EnemyController : Character {
     // Use this for initialization
     void Start() {
         state = waiting;
+        isFacingRight = false;
+        viewRange = 6;
+
     }
     private void OnMouseDown()
     {
@@ -67,6 +73,7 @@ public class EnemyController : Character {
         foreach (GameObject possibleTarget in possibleTargets)// Проверяем каждый, может ли он быть ближайшим
         {
             double distance = DistanceFromTo(transform.position, possibleTarget.transform.position);
+            //Debug.Log("Distance to Object " + distance + "; Minimal distance " + minDistance);
             if (distance < minDistance)
             {
                 minDistance = distance;
@@ -79,22 +86,26 @@ public class EnemyController : Character {
     {
         
         
-        double minDistance = viewRange;
-        bool isHeroFound = false;
+        double minDistance = 10;//!! Найти ошибку с ViewRange!!
+
+
+
+        //Debug.Log("Hero Seeking: minDistance " + minDistance + "; viewRange " + viewRange);
         string[] tagsArray = { "Hero", "ActiveHero", "PassiveHero" }; //Набор тегов для поиска
-        foreach (string tag in tagsArray)
+        foreach (string tag in tagsArray) // Ищем по всем тегам и находим ближайший объект
         {
+            
             SeekingTheClosestObjectByTag(tag, minDistance);
-            if (theClosestOne != null)
+            if (theClosestOne != null) //При нахождении достаточно близкого врага, задаём его как цель
+
             {
                 minDistance = DistanceFromTo(theClosestOne.transform.position, transform.position); //Обновление минимального расстояния до цели
+                //Debug.Log("minDistance " + minDistance);
+                targetObject = theClosestOne;
+                isTargetHero = true;
             }
         }
-        if (theClosestOne != null)//Если найден ближайший объект внутри радиуса обзора, то задаём цель
-        {
-            targetObject = theClosestOne;
-            isTargetHero = true;
-        }
+        
     }
     public void Hurt()
     {
@@ -131,29 +142,54 @@ public class EnemyController : Character {
         {
             isTargetDefined = false; // При достижении цели сбрасываем флаг наличия цели
         }
-
+        
     }
 
     void TargetDefining ()
     {
-        //HeroSeeking(); //Поиск недружественной стороны в ближайшем окружении к нам
+        HeroSeeking(); //Поиск недружественной стороны в ближайшем окружении к нам
         //Debug.Log("Setting new target");
-        Vector3 point = (UnityEngine.Random.insideUnitSphere); //задаём рандомное направление (круиз / патруль)
-        point = point * 3;
-        point += Camera.main.transform.position;
-        target = SetTarget(point);
+
+        if (isTargetHero)
+        {
+            maxSpeed = RageSpeed;
+            target = SetTarget(targetObject.transform.position);
+        }
+        else
+        {
+            maxSpeed = NormalSpeed;
+            Vector3 point = (UnityEngine.Random.insideUnitSphere); //задаём рандомное направление (круиз / патруль)
+            point = point * 3;
+            point += Camera.main.transform.position;
+            target = SetTarget(point);
+        }
     }
 
+
+    void UpdateTarget()
+    {
+       if (isTargetHero)
+       {
+            maxSpeed = RageSpeed;
+            SetTarget(targetObject.transform.position);
+       }
+    }
 
     // Update is called once per frame
     void FixedUpdate () {
         //Debug.Log("FUpdate");
         if (isTargetDefined == false)
         {
+            //Debug.Log("ViewRange " + viewRange);
             TargetDefining();// Задание точки перемещения
         }
         else
         {
+            if (isTargetHero == false)
+            {
+                HeroSeeking();
+            }
+            UpdateTarget();
             PositionUpdate(); //Перемещение к цели
         }
         if (HP <= 0 && !dead)
